@@ -1,0 +1,16 @@
+{
+  "name": "http-extra",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "DEBUG=http-extra node test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "debug": "^4.1.0",
+    "is-stream": "^1.1.0"
+  }
+}
