@@ -23,6 +23,14 @@ const server = http.createServer(function (req, res) {
     }
 
     if (req.url === '/d') {
+        res.write('hello\n')
+        res.write(fs.createReadStream('./package.json'))
+        res.write(fs.createReadStream('./index.js'))
+        res.write('world\n')
+        res.end()
+    }
+
+    if (req.url === '/f') {
         res.write(fs.createReadStream('./package.json'))
         res.write(fs.createReadStream('./index.js'))
         res.end()
