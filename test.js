@@ -1,8 +1,9 @@
 const fs = require('fs')
 const http = require('http')
 const through = require('.')
+const graceful = require('graceful')
 
-const server = http.createServer(function (req, res) {
+const app = http.createServer(function (req, res) {
     through(res)
 
     if (req.url === '/') {
@@ -37,4 +38,9 @@ const server = http.createServer(function (req, res) {
     }
 })
 
-server.listen(8000)
+var server = app.listen(8000)
+
+graceful({
+    servers: [server],
+    killTimeout: '30s',
+})

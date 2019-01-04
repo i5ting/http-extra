@@ -15,6 +15,7 @@
   },
   "devDependencies": {
     "finalhandler": "^1.1.1",
+    "graceful": "^1.0.2",
     "serve-static": "^1.13.2"
   }
 }
