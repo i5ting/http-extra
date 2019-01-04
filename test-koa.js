@@ -1,6 +1,7 @@
 const fs = require('fs')
 const http = require('http')
 const Koa = require('koa');
+const graceful = require('graceful')
 const app = new Koa();
 const through = require('.')
 // logger
@@ -38,4 +39,9 @@ app.use(async ctx => {
     }
 });
 
-app.listen(3000);
+var server = app.listen(3000)
+
+graceful({
+    servers: [server],
+    killTimeout: '30s',
+})
