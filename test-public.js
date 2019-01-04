@@ -1,15 +1,26 @@
-var finalhandler = require('finalhandler')
-var http = require('http')
-var serveStatic = require('serve-static')
+const fs = require('fs')
 const through = require('.')
-// Serve up public/ftp folder
-var serve = serveStatic('./public', { 'index': ['index.html', 'index.htm'] })
+const Koa = require('koa');
+const app = new Koa();
+// app.use(require('koa-static')('./public'));
 
-// Create server
-var server = http.createServer(function onRequest(req, res) {
-    // through(res)
-    serve(req, res, finalhandler(req, res))
-})
+app.use(async ctx => {
+    const res = ctx.res
+    through(res)
+    
+    if(ctx.path === '/'){
+        res.write('hello\n')
+        res.end()
+    }else{
+        res.write('hello\n')
+        res.write(fs.createReadStream('./package.json'))
+        res.write(fs.createReadStream('./index.js'))
+        res.write('world\n')
+        res.end()
+    }
+});
+
+app.use(require('koa-static')('./public'));
 
 // Listen
-server.listen(3000)
+app.listen(3000)

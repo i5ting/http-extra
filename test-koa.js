@@ -25,12 +25,17 @@ app.use(async (ctx, next) => {
 app.use(async ctx => {
     const res = ctx.res
     through(res)
-    res.write('hello\n')
-    res.write(fs.createReadStream('./package.json'))
-    res.write(fs.createReadStream('./index.js'))
-    res.write('world\n')
-    res.end()
-  ctx.body = null;
+    
+    if(ctx.path === '/'){
+        res.write('hello\n')
+        res.end()
+    }else{
+        res.write('hello\n')
+        res.write(fs.createReadStream('./package.json'))
+        res.write(fs.createReadStream('./index.js'))
+        res.write('world\n')
+        res.end()
+    }
 });
 
 app.listen(3000);

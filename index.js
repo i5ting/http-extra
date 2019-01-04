@@ -1,12 +1,24 @@
 const debug = require('debug')('http-extra')
 const isStream = require('is-stream')
 
+function isStreamEnded(stream) {
+  var ended;
+
+  if (typeof stream.ended !== 'undefined') {
+    ended = stream.ended;
+  } else {
+    ended = stream._readableState.ended;
+  }
+
+  return Boolean(ended).valueOf();
+}
+
 module.exports = function (res) {
   const { Readable, Writable } = require('stream')
   var stream = new Readable({
     read() { }
   })
-
+  let writeStreamable = false
   stream.i = 0
 
   stream.on('data', (data) => {
@@ -16,7 +28,7 @@ module.exports = function (res) {
 
   stream.add = function (s) {
     if (false === isStream(s)) return
-
+    writeStreamable = true
     var that = this
     this.i++
 
@@ -34,19 +46,22 @@ module.exports = function (res) {
       }
     })
   }
-
+  
   res._end = res.end
   res.end = function () {
-    if (arguments.length > 0)
-      return res._end.apply(this, arguments)
+    let that = this
+    debug('writeStreamable =' + writeStreamable)
+    if (writeStreamable === false){
+      return res._end.apply(that, arguments)
+    }
 
     stream.on('end', function () {
       debug('res.end() trigger stream end')
       // res.end()
-      res._end()
+      res._end.apply(that, arguments)
     })
   }
-
+  
   res.__write = res.write
   res.write = function () {
     var i = arguments[0]

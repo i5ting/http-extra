@@ -11,12 +11,6 @@ const app = http.createServer(function (req, res) {
         res.end('hello world\n')
     }
 
-    if (req.url === '/json') {
-        res.json({
-            a: 1
-        })
-    }
-
     if (req.url === '/s') {
         res.stream.add(fs.createReadStream('./package.json'))
         res.stream.add(fs.createReadStream('./index.js'))
@@ -38,7 +32,7 @@ const app = http.createServer(function (req, res) {
     }
 })
 
-var server = app.listen(8000)
+var server = app.listen(3000)
 
 graceful({
     servers: [server],

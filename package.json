@@ -14,9 +14,8 @@
     "is-stream": "^1.1.0"
   },
   "devDependencies": {
-    "finalhandler": "^1.1.1",
     "graceful": "^1.0.2",
     "koa": "^2.6.2",
-    "serve-static": "^1.13.2"
+    "koa-static": "^5.0.0"
   }
 }
