@@ -46,7 +46,12 @@ module.exports = function (res) {
       }
     })
   }
-  
+  // 解决：如果stream先end，然后res.end
+  stream.on('end', function () {
+    debug('stream.end() before res.end')
+    writeStreamable = false
+  })
+
   res._end = res.end
   res.end = function () {
     let that = this
